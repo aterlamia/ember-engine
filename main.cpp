@@ -2,6 +2,7 @@
 #include <Display/Window.h>
 #include <SDL_opengl.h>
 #include <iostream>
+#include <tools/file.h>
 
 int main() {
 
@@ -14,6 +15,11 @@ int main() {
     std::cout << "Something failed\n";
   }
 
+  try {
+    std::cout << getFileContents("files/test.txt");
+  } catch (int i) {
+    std::cout << " the integer exception was caught, with value: " << strerror(i) << '\n';
+  }
 
   SDL_Event event;
 

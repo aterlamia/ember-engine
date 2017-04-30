@@ -4,22 +4,22 @@
 //
 
 #include <iostream>
-#include <SDL_opengl.h>
 #include "Window.h"
 
 namespace Ember {
+
   void Window::update() const {
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     SDL_GL_SwapWindow(window);
   }
 
 
   void Window::clear() const {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
   }
 
   bool Window::init() {
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
       std::cout << "Error on line " << __LINE__ << " in " __FILE__ << " WITH " << SDL_GetError() << std::endl;
       return false;
     }
@@ -27,11 +27,17 @@ namespace Ember {
     std::cout << "SDL succesfull inited " << std::endl;
 
     window = SDL_CreateWindow(
-        title, 0, 0, windowWidth, windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
+        title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight,
+        SDL_WINDOW_OPENGL
     );
 
-    context = SDL_GL_CreateContext(window);
+    //Initialize OpenGL
+    if (!initGL()) {
+      printf("Unable to initialize OpenGL!\n");
+      return false;
+    }
 
+    context = SDL_GL_CreateContext(window);
     if (context == NULL) {
       printf("OpenGL context could not be created! SDL Error: %s\n", SDL_GetError());
     } else {
@@ -40,11 +46,9 @@ namespace Ember {
         printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
       }
 
-      //Initialize OpenGL
-      if (!initGL()) {
-        printf("Unable to initialize OpenGL!\n");
-        return false;
-      }
+      glewExperimental = GL_TRUE;
+      glewInit();
+
     }
     return true;
   }

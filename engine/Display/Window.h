@@ -7,19 +7,17 @@
 #define EMBER_CORE_WINDOW_H
 
 #include <string>
+#include <GL/glew.h>
 #include <SDL.h>
 
 namespace Ember {
   class Window {
-
     private :
       int windowHeight, windowWidth;;
       const char *title;
       SDL_Window *window;
       SDL_GLContext context;
-
     public:
-
       virtual ~Window() {};
       Window(
           int windowHeight,
@@ -28,6 +26,8 @@ namespace Ember {
       );
 
       bool init();
+
+
 
       void update() const;
       void clear() const;
@@ -40,6 +40,7 @@ namespace Ember {
           Sint32 i1
       );
       void handleEvents(SDL_Event event);
+      bool SetOpenGLAttributes();
   };
 };
 

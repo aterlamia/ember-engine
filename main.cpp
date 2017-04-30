@@ -1,8 +1,12 @@
 
 #include <Display/Window.h>
-#include <SDL_opengl.h>
+#include <Graphical/Shader.h>
 #include <iostream>
-#include <tools/file.h>
+#include <tools/helpers.h>
+
+#define GL3_PROTOTYPES 1
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
 
 int main() {
 
@@ -12,17 +16,37 @@ int main() {
   if (window->init()) {
     isRunning = true;
   } else {
-    std::cout << "Something failed\n";
+    SDL_Log("Something failed");
   }
 
-  try {
-    std::cout << getFileContents("files/test.txt");
-  } catch (int i) {
-    std::cout << " the integer exception was caught, with value: " << strerror(i) << '\n';
-  }
+//  helpers::printSDL_GL_Attributes();
 
+  GLfloat vertices[] = {
+      -0.5f, -0.5f, 0.0f,
+      -0.5f, 0.5f, 0.0f,
+      0.5f, 0.5f, 0.0f,
+      0.5f, 0.5f, 0.0f,
+      0.5f, -0.5f, 0.0f,
+      -0.5f, -0.5f, 0.0f
+  };
+
+  GLuint vertexArray;
+  glGenVertexArrays(1, &vertexArray);
+  glBindVertexArray(vertexArray);
+
+  GLuint vertexBuffer;
+  glGenBuffers(1, &vertexBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(0);
+
+  SDL_Log("Loading shaders");
+  Shader shader("files/shaders/base.vert", "files/shaders/base.frag");
+  shader.on();
   SDL_Event event;
 
+  SDL_Log("Starting game loop");
   while (isRunning) {
     window->clear();
 
@@ -32,10 +56,6 @@ int main() {
         case SDL_QUIT:
           isRunning = false;
           break;
-        case SDL_WINDOWEVENT_RESIZED:
-          std::cout << "!!!!!\n";
-          window->resize(event.window.data1, event.window.data2);
-          break; // resizing called here
         default:
           break;
       }
@@ -53,13 +73,8 @@ int main() {
         window->handleEvents(event);
       }
     }
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    glBegin(GL_QUADS);
-    glVertex2d(-0.5f, -0.5f);
-    glVertex2d(0.0f, 0.5f);
-    glVertex2d(-0.5f, 0.0f);
-    glVertex2d(0.5f, 0.5f);
-    glEnd();
     window->update();
   }
   return 0;

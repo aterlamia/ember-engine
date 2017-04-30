@@ -10,7 +10,7 @@ set(SOURCE_FILES
     main.cpp
     engine/Display/Window.cpp
     engine/Display/Window.h
-    engine/Graphical/Renderer.cpp engine/Graphical/Renderer.h engine/Graphical/Renderable.cpp engine/Graphical/Renderable.h engine/Math/Vector3D.cpp engine/Math/Vector3D.h engine/Math/Vector2D.cpp engine/Math/Vector2D.h engine/Math/Vector4D.cpp engine/Math/Vector4D.h engine/Math/Matrix.cpp engine/Math/Matrix.h engine/Math/Math.cpp engine/Math/Math.h engine/tools/file.h)
+    engine/Graphical/Renderer.cpp engine/Graphical/Renderer.h engine/Graphical/Renderable.cpp engine/Graphical/Renderable.h engine/Math/Vector3D.cpp engine/Math/Vector3D.h engine/Math/Vector2D.cpp engine/Math/Vector2D.h engine/Math/Vector4D.cpp engine/Math/Vector4D.h engine/Math/Matrix.cpp engine/Math/Matrix.h engine/Math/Math.cpp engine/Math/Math.h engine/tools/file.h engine/Graphical/Shader.cpp engine/Graphical/Shader.h engine/tools/helpers.cpp engine/tools/helpers.h)
 
 add_executable(Ember_core ${SOURCE_FILES})
 

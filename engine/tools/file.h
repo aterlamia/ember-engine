@@ -9,13 +9,11 @@
 #include <string>
 #include <cerrno>
 
-
 #ifndef EMBER_CORE_FILE_H
 #define EMBER_CORE_FILE_H
 
 std::string getFileContents(const char *filename) {
   std::ifstream in(filename, std::ios::in | std::ios::binary);
-
   if (in) {
     std::string contents;
     in.seekg(0, std::ios::end);
@@ -25,6 +23,7 @@ std::string getFileContents(const char *filename) {
     in.close();
     return (contents);
   }
+
   throw (errno);
 }
 

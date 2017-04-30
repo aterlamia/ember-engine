@@ -41,6 +41,7 @@ int main() {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(0);
 
+
   SDL_Log("Loading shaders");
   Shader shader("files/shaders/base.vert", "files/shaders/base.frag");
   shader.on();

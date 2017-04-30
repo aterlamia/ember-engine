@@ -9,7 +9,7 @@
 namespace Ember {
 
   void Window::update() const {
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.2, 0.2, 0.2, 0.2);
     SDL_GL_SwapWindow(window);
   }
 

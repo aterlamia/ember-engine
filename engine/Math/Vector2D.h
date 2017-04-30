@@ -14,7 +14,6 @@ class Vector2D {
     float y;
 
     Vector2D();
-
     Vector2D(
         const float &x,
         const float &y
@@ -25,8 +24,6 @@ class Vector2D {
     Vector2D &multiply(const Vector2D &vector);
     Vector2D &divide(const Vector2D &vector);
 
-//    friend std::ostream &operator<<(std::ostream &stream, const Vector2D& vector);
-//
     friend std::ostream &operator<<(std::ostream &out, const Vector2D &vector);
 };
 

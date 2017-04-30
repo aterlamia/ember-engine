@@ -29,13 +29,11 @@ Shader::Shader(
   glAttachShader(shaderProgram, vertextShader);
   glAttachShader(shaderProgram, fragmentShader);
 
-
-//  LinkShaders();
   glLinkProgram(shaderProgram);
   glValidateProgram(shaderProgram);
 
-//  glDeleteShader(vertextShader);
-//  glDeleteShader(fragmentShader);
+  glDeleteShader(vertextShader);
+  glDeleteShader(fragmentShader);
 }
 
 void Shader::loadShader(
@@ -49,10 +47,8 @@ void Shader::loadShader(
   glShaderSource(shader, 1, &shaderString, NULL);
   glCompileShader(shader);
   glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+
   if (result == GL_FALSE) {
-
-    PrintShaderCompilationErrorInfo(shader);
-
     GLint lenght;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &lenght);
     std::vector<char> error(lenght);
@@ -76,59 +72,6 @@ Shader::~Shader() {
   glDeleteProgram(shaderProgram);
 }
 
-bool Shader::LinkShaders() {
-  // Link. At this point, our shaders will be inspected/optized and the binary code generated
-  // The binary code will then be uploaded to the GPU
-  glLinkProgram(shaderProgram);
-
-  // Verify that the linking succeeded
-  int isLinked;
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, (int *) &isLinked);
-
-  if (isLinked == false)
-    PrintShaderLinkingError(shaderProgram);
-
-  return isLinked != 0;
-}
-
-void Shader::PrintShaderLinkingError(int32_t shaderId) {
-  std::cout << "=======================================\n";
-  std::cout << "Shader linking failed : " << std::endl;
-
-  // Find length of shader info log
-  int maxLength;
-  glGetProgramiv(shaderId, GL_INFO_LOG_LENGTH, &maxLength);
-
-  std::cout << "Info Length : " << maxLength << std::endl;
-
-  // Get shader info log
-  char *shaderProgramInfoLog = new char[maxLength];
-  glGetProgramInfoLog(shaderProgram, maxLength, &maxLength, shaderProgramInfoLog);
-
-  std::cout << "Linker error message : " << shaderProgramInfoLog << std::endl;
-
-  /* Handle the error in an appropriate way such as displaying a message or writing to a log file. */
-  /* In this simple program, we'll just leave */
-  delete shaderProgramInfoLog;
-  return;
-}
-
-// If something went wrong whil compiling the shaders, we'll use this function to find the error
-void Shader::PrintShaderCompilationErrorInfo(int32_t shaderId) {
-  std::cout << "=======================================\n";
-  std::cout << "Shader compilation failed : " << std::endl;
-
-  // Find length of shader info log
-  int maxLength;
-  glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &maxLength);
-
-  // Get shader info log
-  char *shaderInfoLog = new char[maxLength];
-  glGetShaderInfoLog(shaderId, maxLength, &maxLength, shaderInfoLog);
-
-  // Print shader info log
-  std::cout << "\tError info : " << shaderInfoLog << std::endl;
-
-  std::cout << "=======================================\n\n";
-  delete shaderInfoLog;
+GLuint Shader::getShaderId() {
+  return shaderProgram;
 }

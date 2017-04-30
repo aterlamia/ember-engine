@@ -15,7 +15,9 @@ Matrix::Matrix() {
 }
 
 Matrix::Matrix(float diagonal) {
-  Matrix();
+  for (int i = 0; i < 16; i++) {
+    elements[i] = 0.0f;
+  }
   elements[0] = diagonal;
   elements[5] = diagonal;
   elements[10] = diagonal;
@@ -53,9 +55,9 @@ Matrix Matrix::orthograpic(
   result.elements[5] = 2.0f / (top - bottom);
   result.elements[10] = 2.0f / (near - far);
 
-  result.elements[12] = (left + right) / (left - right);
-  result.elements[13] = (bottom + top) / (bottom - top);
-  result.elements[14] = (far + near) / (far - near);
+  result.elements[3] = (left + right) / (left - right);
+  result.elements[7] = (bottom + top) / (bottom - top);
+  result.elements[11] = (far + near) / (far - near);
 
   return result;
 }
@@ -67,12 +69,11 @@ Matrix Matrix::perspective(
     float far
 ) {
   Matrix result(1.0f);
-
-  result.elements[0] = 1.0f / tan(Math::toRadians(0.5f * fov));;
-  result.elements[5] = result.elements[0] / ratio;
+  result.elements[5] = 1.0f / tan(Math::toRadians(0.5f * fov));
+  result.elements[0] = result.elements[5] / ratio;
   result.elements[10] = (near + far) / (near - far);
-  result.elements[11] = -1.0f;
-  result.elements[14] = (2.0f * near + far) / (near - far);;
+  result.elements[11] = (2.0f * near + far) / (near - far);
+  result.elements[14] = -1.0f;
   return result;
 }
 
@@ -137,4 +138,20 @@ Matrix operator*=(
 ) {
   return
       matrix1.multiply(matrix2);
+}
+
+std::ostream &operator<<(
+    std::ostream &out,
+    const Matrix &matrix
+) {
+  out << "=================MAtRIX 4x4==================\n";
+  out << "[" << matrix.elements[0] << "," << matrix.elements[1] << "," << matrix.elements[2] << ","
+      << matrix.elements[3] << "]\n";
+  out << "[" << matrix.elements[4] << "," << matrix.elements[5] << "," << matrix.elements[6] << ","
+      << matrix.elements[7] << "]\n";
+  out << "[" << matrix.elements[8] << "," << matrix.elements[9] << "," << matrix.elements[10] << ","
+      << matrix.elements[11] << "]\n";
+  out << "[" << matrix.elements[12] << "," << matrix.elements[13] << "," << matrix.elements[14] << ","
+      << matrix.elements[15] << "]\n";
+  return out;
 }

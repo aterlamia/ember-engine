@@ -25,6 +25,7 @@ class Matrix {
         float near,
         float far
     );
+
     static Matrix perspective(
         float fov,
         float ratio,
@@ -48,7 +49,10 @@ class Matrix {
         const Matrix &matrix2
     );
 
+    friend std::ostream &operator<<(
+        std::ostream &out,
+        const Matrix &matrix
+    );
 };
-
 
 #endif //EMBER_CORE_MATRIX_H

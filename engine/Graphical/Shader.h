@@ -19,6 +19,7 @@ class Shader {
 
     void on() const;
     void off() const;
+    GLuint getShaderId();
   private:
     void loadShader(
         const char *path,

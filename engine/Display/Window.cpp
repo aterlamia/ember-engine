@@ -28,7 +28,7 @@ namespace Ember {
 
     window = SDL_CreateWindow(
         title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight,
-        SDL_WINDOW_OPENGL
+        SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
 
     //Initialize OpenGL
@@ -36,6 +36,7 @@ namespace Ember {
       printf("Unable to initialize OpenGL!\n");
       return false;
     }
+
 
     context = SDL_GL_CreateContext(window);
     if (context == NULL) {

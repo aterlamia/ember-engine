@@ -44,7 +44,7 @@ std::ostream &operator<<(
     std::ostream &out,
     const Vector2D &vector
 ) {
-  out << "vector(" << vector.x << "," << vector.y << ")";
+  out << "vector(" << vector.x << "," << vector.y << ")\n";
   return out;
 }
 //

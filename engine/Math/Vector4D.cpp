@@ -58,6 +58,6 @@ std::ostream &operator<<(
     std::ostream &out,
     const Vector4D &vector
 ) {
-  out << "vector4d(" << vector.x << "," << vector.y << "," << vector.z << "," << vector.w << ")";
+  out << "vector4d(" << vector.x << "," << vector.y << "," << vector.z << "," << vector.w << ")\n";
   return out;
 }

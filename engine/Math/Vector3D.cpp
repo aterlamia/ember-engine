@@ -52,6 +52,6 @@ std::ostream &operator<<(
     std::ostream &out,
     const Vector3D &vector
 ) {
-  out << "vector(" << vector.x << "," << vector.y << "," << vector.z << ")";
+  out << "vector(" << vector.x << "," << vector.y << "," << vector.z << ")\n";
   return out;
 }

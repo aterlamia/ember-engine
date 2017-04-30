@@ -42,12 +42,7 @@ Matrix Matrix::identity() {
 }
 
 Matrix Matrix::orthograpic(
-    float left,
-    float right,
-    float top,
-    float bottom,
-    float near,
-    float far
+    float left, float right, float bottom, float top, float near, float far
 ) {
   Matrix result(1.0f);
 

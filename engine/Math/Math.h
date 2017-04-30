@@ -12,9 +12,9 @@
 struct Math {
 
   static float toRadians(float angle) {
-    return (angle * M_PI) / 180;
+    return angle * (M_PI / 180);
 
-  }
+  } 
 
   static float toDegrees(float radians) {
     return (radians * 180) / M_PI;

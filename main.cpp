@@ -4,17 +4,26 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <tools/fps.h>
+
+bool isRunning;
+void handleEvents(
+    Ember::Window *window,
+    SDL_Event &event
+);
+
+void draw();
+
+void initShaders();
 
 int main() {
 
 
   /// ================== TEST code here =====================
 
-  // ===================== End test code ===============
+  /// ===================== End test code ===============
 
   Ember::Window *window = new Ember::Window(1000, 1000, "TST");
-
-  bool isRunning;
 
   if (window->init()) {
     isRunning = true;
@@ -22,6 +31,31 @@ int main() {
     SDL_Log("Something failed");
   }
 
+  initShaders();
+
+  SDL_Event event;
+
+  SDL_Log("Starting game loop");
+
+  Fps *fps = new Fps();
+
+  while (isRunning) {
+    window->clear();
+
+    handleEvents(window, event);
+    draw();
+
+    window->update();
+
+    // For now just a cout
+    fps->update();
+    fps->Render();
+
+  }
+  return 0;
+}
+
+void initShaders() {
   GLfloat vertices[] = {
       0, 0, 0,
       3, 0, 0,
@@ -47,44 +81,43 @@ int main() {
   shader.on();
 
   glm::mat4 projection = glm::ortho(0.0f, 16.0f, 0.0f, 16.0f, -1.0f, 1.0f);
-  glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(3, 3, 0));
-  glUniformMatrix4fv(glGetUniformLocation(shader.getShaderId(), "pr_matrix"), 1, GL_FALSE, glm::value_ptr(projection));
-  glUniformMatrix4fv(glGetUniformLocation(shader.getShaderId(), "ml_matrix"), 1, GL_FALSE, glm::value_ptr(translation));
+  glm::mat4 translation = translate(glm::mat4(), glm::vec3(3, 3, 0));
+  glUniformMatrix4fv(glGetUniformLocation(shader.getShaderId(), "pr_matrix"), 1, GL_FALSE, value_ptr(projection));
+  glUniformMatrix4fv(glGetUniformLocation(shader.getShaderId(), "ml_matrix"), 1, GL_FALSE, value_ptr(translation));
 
   glUniform2f(glGetUniformLocation(shader.getShaderId(), "light_pos"), 4.5f, 4.5f);
   glUniform4f(glGetUniformLocation(shader.getShaderId(), "colour"), 0.2f, 0.3f, 0.8f, 1.0f);
-  SDL_Event event;
+}
 
-  SDL_Log("Starting game loop");
-  while (isRunning) {
-    window->clear();
+void draw() {
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+}
 
-    while (SDL_PollEvent(&event)) {
+void handleEvents(
+    Ember::Window *window,
+    SDL_Event &event
+) {
+  while (SDL_PollEvent(&event)) {
 
-      switch (event.type) {
-        case SDL_QUIT:
+    switch (event.type) {
+      case SDL_QUIT:
+        isRunning = false;
+        break;
+      default:
+        break;
+    }
+
+    if (event.type == SDL_KEYDOWN) {
+      switch (event.key.keysym.sym) {
+        case SDLK_ESCAPE:
           isRunning = false;
           break;
         default:
           break;
       }
-
-      if (event.type == SDL_KEYDOWN) {
-        switch (event.key.keysym.sym) {
-          case SDLK_ESCAPE:
-            isRunning = false;
-            break;
-          default:
-            break;
-        }
-      }
-      if (event.type == SDL_WINDOWEVENT) {
-        window->handleEvents(event);
-      }
     }
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    window->update();
+    if (event.type == SDL_WINDOWEVENT) {
+      window->handleEvents(event);
+    }
   }
-  return 0;
 }

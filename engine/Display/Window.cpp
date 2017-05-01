@@ -9,22 +9,19 @@
 namespace Ember {
 
   void Window::update() const {
-    glClearColor(0.2, 0.2, 0.2, 0.2);
+//    glClearColor(0.2, 0.2, 0.2, 0.2);
     SDL_GL_SwapWindow(window);
   }
-
 
   void Window::clear() const {
     glClear(GL_COLOR_BUFFER_BIT);
   }
 
   bool Window::init() {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
       std::cout << "Error on line " << __LINE__ << " in " __FILE__ << " WITH " << SDL_GetError() << std::endl;
       return false;
     }
-
-    std::cout << "SDL succesfull inited " << std::endl;
 
     window = SDL_CreateWindow(
         title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight,
@@ -37,7 +34,8 @@ namespace Ember {
       return false;
     }
 
-
+    SDL_Log("SDL succesfull inited ");
+    SDL_Log("Creating context ");
     context = SDL_GL_CreateContext(window);
     if (context == NULL) {
       printf("OpenGL context could not be created! SDL Error: %s\n", SDL_GetError());
@@ -45,12 +43,14 @@ namespace Ember {
       //Use Vsync
       if (SDL_GL_SetSwapInterval(1) < 0) {
         printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+      } else {
+        SDL_Log("Vsync enabled");
       }
 
-      glewExperimental = GL_TRUE;
-      glewInit();
-
     }
+    glewExperimental = GL_TRUE;
+    glewInit();
+
     return true;
   }
 

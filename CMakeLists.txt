@@ -18,6 +18,8 @@ set(SOURCE_FILES
     engine/Graphical/Shader.cpp
     engine/Graphical/Shader.h
     engine/tools/helpers.cpp
+    engine/tools/fps.h
+    engine/tools/Interval.h
     engine/tools/helpers.h
     )
 
@@ -35,12 +37,8 @@ INCLUDE_DIRECTORIES(${SDL2IMAGE_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${GLFW_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${GLM_INCLUDE_DIRS})
 
-if(NOT GLM_FOUND)
-    message(Error "GLM not found")
-endif(NOT GLM_FOUND)
-
-
-#INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/libraries/gml")
+FIND_PATH( SOIL_INCLUDE_DIRS SOIL.h PATH_SUFFIXES SOIL )
+FIND_LIBRARY( SOIL_LIBRARIES SOIL)
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${GLFW_LIBRARIES})
 

@@ -10,7 +10,16 @@ set(SOURCE_FILES
     main.cpp
     engine/Display/Window.cpp
     engine/Display/Window.h
-    engine/Graphical/Renderer.cpp engine/Graphical/Renderer.h engine/Graphical/Renderable.cpp engine/Graphical/Renderable.h engine/Math/Vector3D.cpp engine/Math/Vector3D.h engine/Math/Vector2D.cpp engine/Math/Vector2D.h engine/Math/Vector4D.cpp engine/Math/Vector4D.h engine/Math/Matrix.cpp engine/Math/Matrix.h engine/Math/Math.cpp engine/Math/Math.h engine/tools/file.h engine/Graphical/Shader.cpp engine/Graphical/Shader.h engine/tools/helpers.cpp engine/tools/helpers.h)
+    engine/Graphical/Renderer.cpp
+    engine/Graphical/Renderer.h
+    engine/Graphical/Renderable.cpp
+    engine/Graphical/Renderable.h
+    engine/tools/file.h
+    engine/Graphical/Shader.cpp
+    engine/Graphical/Shader.h
+    engine/tools/helpers.cpp
+    engine/tools/helpers.h
+    )
 
 add_executable(Ember_core ${SOURCE_FILES})
 
@@ -19,11 +28,19 @@ INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 PKG_SEARCH_MODULE(GLFW REQUIRED glfw3)
+PKG_SEARCH_MODULE(GLM REQUIRED glm)
 
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${SDL2IMAGE_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${GLFW_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${GLM_INCLUDE_DIRS})
 
+if(NOT GLM_FOUND)
+    message(Error "GLM not found")
+endif(NOT GLM_FOUND)
+
+
+#INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/libraries/gml")
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${GLFW_LIBRARIES})
 

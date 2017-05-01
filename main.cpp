@@ -1,44 +1,19 @@
 
 #include <Display/Window.h>
 #include <Graphical/Shader.h>
-#include <Math/Matrix.h>
-#include <iostream>
-#include <Math/Vector2D.h>
-#include <Math/Vector4D.h>
-
-#define GL3_PROTOTYPES 1
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 int main() {
 
 
   /// ================== TEST code here =====================
 
-  Vector2D vec2 = Vector2D(1, 2);
-  Vector3D vec3 = Vector3D(1, 2, 3);
-  Vector4D vec4 = Vector4D(1, 2, 3, 4);
-  Matrix init1 = Matrix();
-  Matrix init2 = Matrix(12.0f);
-  Matrix identity = Matrix::identity();
-  Matrix ortho = Matrix::orthograpic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
-  Matrix pers = Matrix::perspective(10, 6, 1, 2);
-
-  std::cout << vec2;
-  std::cout << vec3;
-  std::cout << vec4;
-  std::cout << "\nWithout float\n\n";
-  std::cout << init1;
-  std::cout << "\nWith float\n\n";
-  std::cout << init2;
-  std::cout << "\nIdentity\n\n";
-  std::cout << identity;
-  std::cout << "\nOrtho\n\n";
-  std::cout << ortho;
-  std::cout << "\nPerspective\n\n";
-  std::cout << pers;
   // ===================== End test code ===============
 
-
   Ember::Window *window = new Ember::Window(1000, 1000, "TST");
+
   bool isRunning;
 
   if (window->init()) {
@@ -49,11 +24,11 @@ int main() {
 
   GLfloat vertices[] = {
       0, 0, 0,
-      8, 0, 0,
+      3, 0, 0,
       0, 3, 0,
       0, 3, 0,
-      8, 3, 0,
-      8, 0, 0
+      3, 3, 0,
+      3, 0, 0
   };
 
   GLuint vertexArray;
@@ -71,14 +46,14 @@ int main() {
   Shader shader("files/shaders/base.vert", "files/shaders/base.frag");
   shader.on();
 
-  Matrix projection = Matrix::orthograpic(0.0f, 16.0f, 0.0f, 9.0f, 1.0f, -1.0f);
-  glUniformMatrix4fv(glGetUniformLocation(shader.getShaderId(), "pr_matrix"), 1, GL_FALSE, ortho.elements);
+  glm::mat4 projection = glm::ortho(0.0f, 16.0f, 0.0f, 16.0f, -1.0f, 1.0f);
+  glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(3, 3, 0));
+  glUniformMatrix4fv(glGetUniformLocation(shader.getShaderId(), "pr_matrix"), 1, GL_FALSE, glm::value_ptr(projection));
+  glUniformMatrix4fv(glGetUniformLocation(shader.getShaderId(), "ml_matrix"), 1, GL_FALSE, glm::value_ptr(translation));
 
-  glUniform2f(glGetUniformLocation(shader.getShaderId(), "light_pos"), 3, 3);
+  glUniform2f(glGetUniformLocation(shader.getShaderId(), "light_pos"), 4.5f, 4.5f);
   glUniform4f(glGetUniformLocation(shader.getShaderId(), "colour"), 0.2f, 0.3f, 0.8f, 1.0f);
   SDL_Event event;
-
-
 
   SDL_Log("Starting game loop");
   while (isRunning) {

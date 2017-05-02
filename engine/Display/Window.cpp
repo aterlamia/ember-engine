@@ -9,7 +9,7 @@
 namespace Ember {
 
   void Window::update() const {
-//    glClearColor(0.2, 0.2, 0.2, 0.2);
+    glClearColor(0.2, 0.2, 0.2, 0.2);
     SDL_GL_SwapWindow(window);
   }
 
@@ -24,7 +24,7 @@ namespace Ember {
     }
 
     window = SDL_CreateWindow(
-        title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight,
+        title, 0, 0, windowWidth, windowHeight,
         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
 
@@ -41,12 +41,12 @@ namespace Ember {
       printf("OpenGL context could not be created! SDL Error: %s\n", SDL_GetError());
     } else {
       //Use Vsync
-      if (SDL_GL_SetSwapInterval(1) < 0) {
-        printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
-      } else {
-        SDL_Log("Vsync enabled");
-      }
-
+//      if (SDL_GL_SetSwapInterval(1) < 0) {
+//        printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+//      } else {
+//        SDL_Log("Vsync enabled");
+//      }
+      SDL_GL_SetSwapInterval(0);
     }
     glewExperimental = GL_TRUE;
     glewInit();
@@ -58,7 +58,7 @@ namespace Ember {
   bool Window::initGL() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     return true;

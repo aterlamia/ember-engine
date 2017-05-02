@@ -13,10 +13,10 @@
 namespace Ember {
   class Window {
     private :
-      int windowHeight, windowWidth;;
+      int windowHeight, windowWidth;
       const char *title;
-      SDL_Window *window;
-      SDL_GLContext context;
+      SDL_Window *window = 0;
+      SDL_GLContext context = 0;
     public:
       virtual ~Window() {};
       Window(
@@ -40,7 +40,6 @@ namespace Ember {
           Sint32 i1
       );
       void handleEvents(SDL_Event event);
-      bool SetOpenGLAttributes();
   };
 };
 

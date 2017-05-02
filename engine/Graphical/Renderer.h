@@ -7,8 +7,12 @@
 #define EMBER_CORE_RENDERER_H
 
 
-class Renderer {
+#include "Renderable.h"
 
+class Renderer {
+  public:
+    void queue(Renderable renderable);
+    void draw();
 };
 
 

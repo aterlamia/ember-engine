@@ -4,3 +4,21 @@
 //
 
 #include "Renderable.h"
+
+Renderable::Renderable() {
+  position = glm::vec3(0.0f);
+  color    = glm::vec4(1.0f);
+  size     = glm::vec2(0.0f);
+}
+
+Renderable::Renderable(
+    const glm::vec3 &position,
+    const glm::vec4 &color,
+    const glm::vec2 &size
+) : position(position)
+    , color(color)
+    , size(size) {}
+
+void Renderable::flush() {
+
+}

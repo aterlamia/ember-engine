@@ -13,6 +13,14 @@ namespace Ember {
     SDL_GL_SwapWindow(window);
   }
 
+  int Window::getWindowHeight() const {
+    return windowHeight;
+  }
+
+  int Window::getWindowWidth() const {
+    return windowWidth;
+  }
+
   void Window::clear() const {
     glClear(GL_COLOR_BUFFER_BIT);
   }
@@ -99,15 +107,19 @@ namespace Ember {
                 event.window.data2);
         break;
       case SDL_WINDOWEVENT_RESIZED:
+        resize(event.window.data1, event.window.data2);
+        windowWidth = event.window.data1;
+        windowHeight = event.window.data2;
+
         SDL_Log("Window %d resized to %dx%d",
                 event.window.windowID, event.window.data1,
                 event.window.data2);
         break;
       case SDL_WINDOWEVENT_SIZE_CHANGED:
-        SDL_Log("Window %d size changed to %dx%d",
-                event.window.windowID, event.window.data1,
-                event.window.data2);
         resize(event.window.data1, event.window.data2);
+        windowWidth = event.window.data1;
+        windowHeight = event.window.data2;
+
         break;
       case SDL_WINDOWEVENT_MINIMIZED:
         SDL_Log("Window %d minimized", event.window.windowID);

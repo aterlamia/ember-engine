@@ -17,7 +17,10 @@
 class Game {
   private:
     bool isRunning = false;
+    float ratio;
     int windowHeight, windowWidth;
+    float asepectHeight;
+    float aspectWidth;
 
     Ember::Window *window;
     Fps *fps;
@@ -31,6 +34,11 @@ class Game {
         int windowWidth
     );
     void initShaders();
+    float gcd(
+        float width,
+        float height
+    );
+    void setProjectionMatrix();
 };
 
 

@@ -38,3 +38,7 @@ GLuint Buffer::getId() const {
 GLsizei Buffer::getCount() const {
   return count;
 }
+
+Buffer::~Buffer() {
+  glDeleteBuffers(1, &id);
+}

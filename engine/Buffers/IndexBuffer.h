@@ -16,9 +16,10 @@ class IndexBuffer {
   public:
     IndexBuffer();
     IndexBuffer(
-        GLushort *data,
+        GLuint *data,
         GLsizei count
     );
+    virtual ~IndexBuffer();
     void enable();
     void disable();
     GLuint getId() const;

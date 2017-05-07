@@ -19,6 +19,14 @@ Renderable::Renderable(
     , color(color)
     , size(size) {}
 
-void Renderable::flush() {
+const glm::vec3 &Renderable::getPosition() const {
+  return position;
+}
 
+const glm::vec4 &Renderable::getColor() const {
+  return color;
+}
+
+const glm::vec2 &Renderable::getSize() const {
+  return size;
 }

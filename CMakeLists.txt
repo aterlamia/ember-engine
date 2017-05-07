@@ -21,7 +21,14 @@ set(SOURCE_FILES
     engine/tools/fps.h
     engine/tools/Interval.h
     engine/tools/helpers.h
-    engine/Buffers/Buffer.cpp engine/Buffers/Buffer.h engine/Buffers/IndexBuffer.cpp engine/Buffers/IndexBuffer.h engine/Buffers/VertexArray.cpp engine/Buffers/VertexArray.h game/game.cpp game/game.h)
+    engine/Buffers/Buffer.cpp
+    engine/Buffers/Buffer.h
+    engine/Buffers/IndexBuffer.cpp
+    engine/Buffers/IndexBuffer.h
+    engine/Buffers/VertexArray.cpp
+    engine/Buffers/VertexArray.h
+    game/Game.cpp
+    game/Game.h engine/Graphical/Sprite.cpp engine/Graphical/Sprite.h)
 
 add_executable(Ember_core ${SOURCE_FILES})
 

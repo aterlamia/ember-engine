@@ -4,3 +4,85 @@
 //
 
 #include "Renderer.h"
+
+Renderer::Renderer() {
+  glGenVertexArrays(1, &vertexArray);
+  glBindVertexArray(vertexArray);
+
+  glGenBuffers(1, &vertextBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, vertextBuffer);
+  glBufferData(GL_ARRAY_BUFFER, RENDERER_BUFFER_SIZE, NULL, GL_DYNAMIC_DRAW);
+  glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid *) 0);
+  glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE,
+                        (const GLvoid *) (3 * sizeof(GLfloat)));
+  glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
+  glEnableVertexAttribArray(SHADER_COLOR_INDEX);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  GLuint indices[RENDERER_INDICES_SIZE];
+
+  int offset = 0;
+  for (int i = 0; i < RENDERER_INDICES_SIZE; i += 6) {
+    indices[i] = offset;
+    indices[i + 1] = offset + 1;
+    indices[i + 2] = offset + 2;
+    indices[i + 3] = offset + 2;
+    indices[i + 4] = offset + 3;
+    indices[i + 5] = offset;
+
+    offset += 4;
+  }
+
+
+  indexBuffer = new IndexBuffer(indices, RENDERER_INDICES_SIZE);
+  glBindVertexArray(0);
+}
+
+Renderer::~Renderer() {
+  delete indexBuffer;
+  glDeleteBuffers(1, &vertextBuffer);
+
+}
+
+void Renderer::queue(const Renderable *renderable) {
+  const glm::vec3 &position = renderable->getPosition();
+  const glm::vec4 &color = renderable->getColor();
+  const glm::vec2 &size = renderable->getSize();
+
+  buffer->vertex = position;
+  buffer->color = color;
+  buffer++;
+
+  buffer->vertex = glm::vec3(position.x, position.y + size.y, position.z);
+  buffer->color = color;
+  buffer++;
+
+
+  buffer->vertex = glm::vec3(position.x + size.x, position.y + size.y, position.z);
+  buffer->color = color;
+  buffer++;
+
+  buffer->vertex = glm::vec3(position.x + size.x, position.y, position.z);
+  buffer->color = color;
+  buffer++;
+
+  indexCount += 6;
+}
+
+void Renderer::begin() {
+  glBindBuffer(GL_ARRAY_BUFFER, vertextBuffer);
+  buffer = (VertexData *) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+}
+
+void Renderer::end() {
+  glUnmapBuffer(GL_ARRAY_BUFFER);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Renderer::draw() {
+  glBindVertexArray(vertexArray);
+  indexBuffer->enable();
+  glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
+  indexBuffer->disable();
+  glBindVertexArray(0);
+}

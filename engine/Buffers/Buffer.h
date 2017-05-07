@@ -21,6 +21,8 @@ class Buffer {
     GLsizei count;
     BufferType type;
   public:
+    virtual ~Buffer();
+  public:
     Buffer();
     BufferType getType() const;
     Buffer(

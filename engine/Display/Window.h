@@ -40,6 +40,8 @@ namespace Ember {
           Sint32 i1
       );
       void handleEvents(SDL_Event event);
+      int getWindowHeight() const;
+      int getWindowWidth() const;
   };
 };
 

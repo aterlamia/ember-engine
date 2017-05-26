@@ -8,11 +8,11 @@
 
 
 #include <Display/Window.h>
-#include <tools/fps.h>
 #include <Graphical/Shader.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <Tools/fps.h>
 
 class Game {
   private:
@@ -33,7 +33,6 @@ class Game {
         int windowHeight,
         int windowWidth
     );
-    void initShaders();
     float gcd(
         float width,
         float height

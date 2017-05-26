@@ -12,11 +12,20 @@ Renderer::Renderer() {
   glGenBuffers(1, &vertextBuffer);
   glBindBuffer(GL_ARRAY_BUFFER, vertextBuffer);
   glBufferData(GL_ARRAY_BUFFER, RENDERER_BUFFER_SIZE, NULL, GL_DYNAMIC_DRAW);
-  glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid *) 0);
-  glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE,
-                        (const GLvoid *) (3 * sizeof(GLfloat)));
+
   glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
+  glEnableVertexAttribArray(SHADER_TEXTURE_INDEX);
   glEnableVertexAttribArray(SHADER_COLOR_INDEX);
+
+  glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid *) 0);
+
+  glVertexAttribPointer(SHADER_TEXTURE_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE,
+                        (const GLvoid *)  offsetof(VertexData, VertexData::texture_map));
+
+  glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE,
+                        (const GLvoid *) offsetof(VertexData, VertexData::color));
+
+
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   GLuint indices[RENDERER_INDICES_SIZE];
@@ -48,22 +57,26 @@ void Renderer::queue(const Renderable *renderable) {
   const glm::vec3 &position = renderable->getPosition();
   const glm::vec4 &color = renderable->getColor();
   const glm::vec2 &size = renderable->getSize();
+  const std::vector<glm::vec2 >&texture = renderable->getTexture();
 
   buffer->vertex = position;
   buffer->color = color;
+  buffer->texture_map = texture[0];
   buffer++;
 
   buffer->vertex = glm::vec3(position.x, position.y + size.y, position.z);
   buffer->color = color;
+  buffer->texture_map = texture[1];
   buffer++;
-
 
   buffer->vertex = glm::vec3(position.x + size.x, position.y + size.y, position.z);
   buffer->color = color;
+  buffer->texture_map = texture[2];
   buffer++;
 
   buffer->vertex = glm::vec3(position.x + size.x, position.y, position.z);
   buffer->color = color;
+  buffer->texture_map = texture[3];
   buffer++;
 
   indexCount += 6;
@@ -85,4 +98,5 @@ void Renderer::draw() {
   glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
   indexBuffer->disable();
   glBindVertexArray(0);
+  indexCount = 0;
 }

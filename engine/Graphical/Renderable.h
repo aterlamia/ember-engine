@@ -7,9 +7,12 @@
 #define EMBER_CORE_RENDERABLE_H
 
 #include <glm/glm.hpp>
+#include <vector>
 
 struct VertexData {
   glm::vec3 vertex;
+  glm::vec2 texture_map;
+//  unsigned int texture;
   glm::vec4 color;
 };
 
@@ -18,6 +21,11 @@ class Renderable {
     glm::vec3 position;
     glm::vec4 color;
     glm::vec2 size;
+public:
+    const std::vector<glm::vec2> &getTexture() const;
+
+private:
+    std::vector<glm::vec2> texture;
   public:
     Renderable();
     Renderable(

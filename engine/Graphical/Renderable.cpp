@@ -9,6 +9,10 @@ Renderable::Renderable() {
   position = glm::vec3(0.0f);
   color    = glm::vec4(1.0f);
   size     = glm::vec2(0.0f);
+  texture.push_back(glm::vec2(0.0f, 0.0f));
+  texture.push_back(glm::vec2(0.0f, 1.0f));
+  texture.push_back(glm::vec2(1.0f, 1.0f));
+  texture.push_back(glm::vec2(1.0f, 0.0f));
 }
 
 Renderable::Renderable(
@@ -17,7 +21,12 @@ Renderable::Renderable(
     const glm::vec2 &size
 ) : position(position)
     , color(color)
-    , size(size) {}
+    , size(size) {
+    texture.push_back(glm::vec2(0.0f, 0.0f));
+    texture.push_back(glm::vec2(0.0f, 1.0f));
+    texture.push_back(glm::vec2(1.0f, 1.0f));
+    texture.push_back(glm::vec2(1.0f, 0.0f));
+}
 
 const glm::vec3 &Renderable::getPosition() const {
   return position;
@@ -29,4 +38,8 @@ const glm::vec4 &Renderable::getColor() const {
 
 const glm::vec2 &Renderable::getSize() const {
   return size;
+}
+
+const std::vector<glm::vec2> &Renderable::getTexture() const {
+    return texture;
 }

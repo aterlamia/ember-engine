@@ -5,6 +5,7 @@
 
 #include <Buffers/VertexArray.h>
 #include <Graphical/Renderer.h>
+#include <Graphical/Texture.h>
 #include "Game.h"
 
 void Game::run() {
@@ -15,19 +16,23 @@ void Game::run() {
 
   glm::mat4 projection = glm::ortho(0.0f, aspectWidth, 0.0f, asepectHeight, -1.0f, 1.0f);
   glUniformMatrix4fv(glGetUniformLocation(shader->getShaderId(), "pr_matrix"), 1, GL_FALSE, value_ptr(projection));
-
+  glUniform1i(glGetUniformLocation(shader->getShaderId(), "textureMap"), 0);
   std::vector<Renderable *> sprites;
-  for (float i = 0; i < 180.0f; i += 1.0f) {
-    for (float j = 0; j < 120.0f; j += 1.0f) {
-      sprites.push_back(
-          new Renderable(glm::vec3(i, j, 0), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 999.0f, 1, 1),
-                         glm::vec2(1.0f, 1.0f)));
+  for (float i = 0; i < 70.0f; i += 0.5f) {
+    for (float j = 0; j < 80.0f; j += 0.5f) {
+      sprites.push_back(new Renderable(glm::vec3(i, j, 0),
+                                       glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 999.0f, 1, 1),
+                                       glm::vec2(0.5f, 0.5f)));
     }
   }
   Renderer renderer;
   glUniform2f(glGetUniformLocation(shader->getShaderId(), "light_pos"), 4.5f, 4.5f);
   std::cout << "NUMBER OF SPRITES = " << sprites.size() << std::endl;
   SDL_Log("Starting game loop");
+
+  glActiveTexture(GL_TEXTURE0);
+  Ember::Texture texture("files/texture/test2.png");
+  texture.bind();
 
   while (isRunning) {
     window->clear();
@@ -77,8 +82,7 @@ bool Game::init() {
 Game::Game(
     int windowWidth,
     int windowHeight
-) : windowHeight(windowHeight)
-    , windowWidth(windowWidth) {
+) : windowHeight(windowHeight), windowWidth(windowWidth) {
   ratio = gcd(windowWidth, windowHeight);
   aspectWidth = (windowWidth / ratio) * 20.0f;
   asepectHeight = (windowHeight / ratio) * 20.0f;
@@ -91,11 +95,9 @@ void Game::handleEvents() {
   while (SDL_PollEvent(&event)) {
 
     switch (event.type) {
-      case SDL_QUIT:
-        isRunning = false;
+      case SDL_QUIT:isRunning = false;
         break;
-      case SDL_MOUSEMOTION:
-        SDL_GetMouseState(&x, &y);
+      case SDL_MOUSEMOTION:SDL_GetMouseState(&x, &y);
         glUniform2f(
             glGetUniformLocation(
                 shader->getShaderId(),
@@ -104,17 +106,14 @@ void Game::handleEvents() {
             float(x * aspectWidth / (float) windowWidth),
             float(asepectHeight - y * asepectHeight / (float) windowHeight));
         break;
-      default:
-        break;
+      default:break;
     }
 
     if (event.type == SDL_KEYDOWN) {
       switch (event.key.keysym.sym) {
-        case SDLK_ESCAPE:
-          isRunning = false;
+        case SDLK_ESCAPE:isRunning = false;
           break;
-        default:
-          break;
+        default:break;
       }
     }
     if (event.type == SDL_WINDOWEVENT) {

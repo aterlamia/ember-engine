@@ -4,7 +4,7 @@
 //
 
 #include <GLES2/gl2.h>
-#include <tools/file.h>
+#include <Tools/file.h>
 #include <vector>
 #include <SDL_log.h>
 #include "Shader.h"
@@ -54,11 +54,11 @@ void Shader::loadShader(
     std::vector<char> error(lenght);
     glGetShaderInfoLog(shader, lenght, &lenght, &error[0]);
     glDeleteShader(shader);
-
     std::cout << path << "\n";
     throw std::runtime_error(&error[0]);
   }
 }
+
 
 void Shader::on() const {
   glUseProgram(shaderProgram);

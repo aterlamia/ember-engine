@@ -17,24 +17,27 @@ struct VertexData {
 };
 
 class Renderable {
-  private:
-    glm::vec3 position;
-    glm::vec4 color;
-    glm::vec2 size;
-public:
-    const std::vector<glm::vec2> &getTexture() const;
+ private:
+  glm::vec3 position;
+  glm::vec4 color;
+  glm::vec2 size;
+  std::vector<glm::vec2> texture;
 
-private:
-    std::vector<glm::vec2> texture;
-  public:
-    Renderable();
-    Renderable(
-        const glm::vec3 &position,
-        const glm::vec4 &color,
-        const glm::vec2 &size
-    );
-    const glm::vec3 &getPosition() const;
-    const glm::vec4 &getColor() const;
-    const glm::vec2 &getSize() const;
+ public:
+  const std::vector<glm::vec2> &getTexture() const;
+
+ private:
+  void setDefaultUV();
+
+ public:
+  Renderable();
+  Renderable(
+      const glm::vec3 &position,
+      const glm::vec4 &color,
+      const glm::vec2 &size
+  );
+  const glm::vec3 &getPosition() const;
+  const glm::vec4 &getColor() const;
+  const glm::vec2 &getSize() const;
 };
 #endif //EMBER_CORE_RENDERABLE_H

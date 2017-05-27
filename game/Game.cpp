@@ -18,20 +18,25 @@ void Game::run() {
   glUniformMatrix4fv(glGetUniformLocation(shader->getShaderId(), "pr_matrix"), 1, GL_FALSE, value_ptr(projection));
   glUniform1i(glGetUniformLocation(shader->getShaderId(), "textureMap"), 0);
   std::vector<Renderable *> sprites;
-  for (float i = 0; i < 70.0f; i += 0.5f) {
-    for (float j = 0; j < 80.0f; j += 0.5f) {
-      sprites.push_back(new Renderable(glm::vec3(i, j, 0),
-                                       glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 999.0f, 1, 1),
-                                       glm::vec2(0.5f, 0.5f)));
-    }
-  }
+
+  sprites.push_back(new Renderable(glm::vec3(20, 20, 0),
+                                   glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 999.0f, 1, 1),
+                                   glm::vec2(40.0f, 40.0f)));
+
+//  for (float i = 0; i < 70.0f; i += 0.5f) {
+//    for (float j = 0; j < 80.0f; j += 0.5f) {
+//      sprites.push_back(new Renderable(glm::vec3(i, j, 0),
+//                                       glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 999.0f, 1, 1),
+//                                       glm::vec2(0.5f, 0.5f)));
+//    }
+//  }
   Renderer renderer;
   glUniform2f(glGetUniformLocation(shader->getShaderId(), "light_pos"), 4.5f, 4.5f);
   std::cout << "NUMBER OF SPRITES = " << sprites.size() << std::endl;
   SDL_Log("Starting game loop");
 
   glActiveTexture(GL_TEXTURE0);
-  Ember::Texture texture("files/texture/test2.png");
+  Ember::Texture texture("files/texture/test.png");
   texture.bind();
 
   while (isRunning) {

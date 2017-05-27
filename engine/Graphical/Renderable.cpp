@@ -22,10 +22,14 @@ Renderable::Renderable(
 ) : position(position)
     , color(color)
     , size(size) {
-    texture.push_back(glm::vec2(0.0f, 0.0f));
-    texture.push_back(glm::vec2(0.0f, 1.0f));
-    texture.push_back(glm::vec2(1.0f, 1.0f));
-    texture.push_back(glm::vec2(1.0f, 0.0f));
+  setDefaultUV();
+}
+
+void Renderable::setDefaultUV() {
+  texture.push_back(glm::vec2(0.25f, 0.25f));
+  texture.push_back(glm::vec2(0.25f, 0.50f));
+  texture.push_back(glm::vec2(0.50f, 0.50f));
+  texture.push_back(glm::vec2(0.50f, 0.25f));
 }
 
 const glm::vec3 &Renderable::getPosition() const {

@@ -27,8 +27,6 @@ set(SOURCE_FILES
     engine/Buffers/IndexBuffer.h
     engine/Buffers/VertexArray.cpp
     engine/Buffers/VertexArray.h
-    engine/Graphical/Sprite.cpp
-    engine/Graphical/Sprite.h
         game/Game.cpp
     game/Game.h
         engine/Tools/ImageLoader.h engine/Graphical/Texture.cpp engine/Graphical/Texture.h)

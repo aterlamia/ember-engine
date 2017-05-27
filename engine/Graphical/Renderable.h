@@ -8,11 +8,12 @@
 
 #include <glm/glm.hpp>
 #include <vector>
+#include "Texture.h"
 
 struct VertexData {
   glm::vec3 vertex;
   glm::vec2 texture_map;
-//  unsigned int texture;
+//  unsigned int uv;
   glm::vec4 color;
 };
 
@@ -21,16 +22,22 @@ class Renderable {
   glm::vec3 position;
   glm::vec4 color;
   glm::vec2 size;
-  std::vector<glm::vec2> texture;
-
+  std::vector<glm::vec2> uv;
+  Ember::Texture *texture = NULL;
  public:
-  const std::vector<glm::vec2> &getTexture() const;
 
+  const std::vector<glm::vec2> &getUV() const;
  private:
-  void setDefaultUV();
 
+  void setDefaultUV();
  public:
+
   Renderable();
+  Renderable(
+      const glm::vec3 &position,
+      const glm::vec2 &size,
+      Ember::Texture *texture
+  );
   Renderable(
       const glm::vec3 &position,
       const glm::vec4 &color,
@@ -39,5 +46,6 @@ class Renderable {
   const glm::vec3 &getPosition() const;
   const glm::vec4 &getColor() const;
   const glm::vec2 &getSize() const;
+  void setFrame(const glm::vec2 &position, const glm::vec2 &size);
 };
 #endif //EMBER_CORE_RENDERABLE_H

@@ -57,7 +57,7 @@ void Renderer::queue(const Renderable *renderable) {
   const glm::vec3 &position = renderable->getPosition();
   const glm::vec4 &color = renderable->getColor();
   const glm::vec2 &size = renderable->getSize();
-  const std::vector<glm::vec2 >&texture = renderable->getTexture();
+  const std::vector<glm::vec2 >&texture = renderable->getUV();
 
   buffer->vertex = position;
   buffer->color = color;

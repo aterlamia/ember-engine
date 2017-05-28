@@ -5,61 +5,55 @@
 
 #include <Buffers/VertexArray.h>
 #include <Graphical/Renderer.h>
-#include <Graphical/Texture.h>
 #include "Game.h"
-
+#include <glm/ext.hpp>
+#include <tools/ToString.h>
 void Game::run() {
 
   SDL_Log("Loading shaders");
   shader = new Shader("files/shaders/base.vert", "files/shaders/base.frag");
   shader->on();
 
-  glm::mat4 projection = glm::ortho(0.0f, aspectWidth, 0.0f, asepectHeight, -1.0f, 1.0f);
+  glm::mat4 projection = glm::ortho(0.0f, (float) windowWidth, (float) windowHeight, 0.0f, 1.0f, -1.0f);
+
   glUniformMatrix4fv(glGetUniformLocation(shader->getShaderId(), "pr_matrix"), 1, GL_FALSE, value_ptr(projection));
   glUniform1i(glGetUniformLocation(shader->getShaderId(), "textureMap"), 0);
 
   glActiveTexture(GL_TEXTURE0);
-  Ember::Texture texture("files/texture/characters.png");
+  Ember::Texture texture("files/assets/groundtile.png");
   texture.bind();
 
   std::vector<Renderable *> sprites;
 
-  sprites.push_back(new Renderable(glm::vec3(0, 0, 0),
-                                   glm::vec2(40.0f, 40.0f),
-                                   &texture
-  ));
-
-
-//  for (float i = 0; i < 70.0f; i += 0.5f) {
-//    for (float j = 0; j < 80.0f; j += 0.5f) {
-//      sprites.push_back(new Renderable(glm::vec3(i, j, 0),
-//                                       glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 999.0f, 1, 1),
-//                                       glm::vec2(0.5f, 0.5f)));
-//    }
-//  }
+  for (int i = 0; i < windowHeight; i += 16) {
+    for (int j = 0; j < windowWidth; j += 16) {
+      Renderable *renderable = new Renderable(glm::vec3(i, j, 0),
+                                              glm::vec2(16.0f, 16.0f),
+                                              &texture
+      );
+      renderable->setFrame(glm::vec2(i, j), glm::vec2(16.0f, 16.0f));
+      sprites.push_back(renderable);
+    }
+  }
   Renderer renderer;
   glUniform2f(glGetUniformLocation(shader->getShaderId(), "light_pos"), 4.5f, 4.5f);
   std::cout << "NUMBER OF SPRITES = " << sprites.size() << std::endl;
   SDL_Log("Starting game loop");
 
-
-  int mCurrentFrame = 0;
-  int frame = 0;
   while (isRunning) {
     window->clear();
     renderer.begin();
-
-//    mCurrentFrame = int(((SDL_GetTicks() / 500) % 4));
     for (int i = 0; i < sprites.size(); i++) {
       renderer.queue(sprites[i]);
     }
-    sprites[0]->setFrame(glm::vec2(0, 448), glm::vec2(64.0f, 64.0f));
+
     renderer.end();
     renderer.draw();
 
     window->update();
 
     handleEvents();
+    fps->update();
     fps->Render();
   }
 }
@@ -67,12 +61,6 @@ void Game::run() {
 void Game::setProjectionMatrix() {
   windowWidth = window->getWindowWidth();
   windowHeight = window->getWindowHeight();
-  ratio = gcd((float) windowWidth, (float) windowHeight);
-  aspectWidth = (((float) windowWidth) / ratio) * 20.0f;
-  asepectHeight = (((float) windowHeight) / ratio) * 20.0f;
-
-  std::cout << "(" << windowWidth << "," << windowHeight << ") : [" << aspectWidth << ", " << asepectHeight << "] --- "
-            << ratio << std::endl;
 }
 
 bool Game::init() {
@@ -94,8 +82,6 @@ Game::Game(
     int windowHeight
 ) : windowHeight(windowHeight), windowWidth(windowWidth) {
   ratio = gcd(windowWidth, windowHeight);
-  aspectWidth = (windowWidth / ratio) * 100.0f;
-  asepectHeight = (windowHeight / ratio) * 100.0f;
 }
 
 void Game::handleEvents() {

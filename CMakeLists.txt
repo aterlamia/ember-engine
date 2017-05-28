@@ -29,7 +29,7 @@ set(SOURCE_FILES
     engine/Buffers/VertexArray.h
         game/Game.cpp
     game/Game.h
-        engine/Tools/ImageLoader.h engine/Graphical/Texture.cpp engine/Graphical/Texture.h)
+        engine/Tools/ImageLoader.h engine/Graphical/Texture.cpp engine/Graphical/Texture.h engine/tools/ToString.h)
 
 add_executable(Ember_core ${SOURCE_FILES})
 

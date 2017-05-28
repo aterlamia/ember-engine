@@ -57,11 +57,11 @@ void Renderable::setFrame(const glm::vec2 &position, const glm::vec2 &size) {
   }
   float left = position.x / texture->getWidth();
   float right = (position.x + size.x) / texture->getWidth();
-  float bottom = position.y / texture->getHeight();
-  float top = (position.y + size.y) / texture->getHeight();
+  float bottom = (texture->getHeight() - position.y - size.y) / texture->getHeight();
+  float top = (texture->getHeight() - position.y) / texture->getHeight();
 
-  uv[0] = glm::vec2(left, bottom);
-  uv[1] = glm::vec2(left, top);
-  uv[2] = glm::vec2(right, top);
-  uv[3] = glm::vec2(right, bottom);
+  uv[0] = glm::vec2(left, top);
+  uv[1] = glm::vec2(left, bottom);
+  uv[2] = glm::vec2(right, bottom);
+  uv[3] = glm::vec2(right, top);
 }

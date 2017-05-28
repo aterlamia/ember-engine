@@ -19,12 +19,12 @@ void Game::run() {
   glUniform1i(glGetUniformLocation(shader->getShaderId(), "textureMap"), 0);
 
   glActiveTexture(GL_TEXTURE0);
-  Ember::Texture texture("files/texture/test.png");
+  Ember::Texture texture("files/texture/characters.png");
   texture.bind();
 
   std::vector<Renderable *> sprites;
 
-  sprites.push_back(new Renderable(glm::vec3(20, 20, 0),
+  sprites.push_back(new Renderable(glm::vec3(0, 0, 0),
                                    glm::vec2(40.0f, 40.0f),
                                    &texture
   ));
@@ -42,28 +42,24 @@ void Game::run() {
   std::cout << "NUMBER OF SPRITES = " << sprites.size() << std::endl;
   SDL_Log("Starting game loop");
 
-  int frame = 3;
+
+  int mCurrentFrame = 0;
+  int frame = 0;
   while (isRunning) {
     window->clear();
     renderer.begin();
 
+//    mCurrentFrame = int(((SDL_GetTicks() / 500) % 4));
     for (int i = 0; i < sprites.size(); i++) {
       renderer.queue(sprites[i]);
-      sprites[0]->setFrame(glm::vec2(0, frame * 71.0f), glm::vec2(71.0f, 71.0f));
     }
+    sprites[0]->setFrame(glm::vec2(0, 448), glm::vec2(64.0f, 64.0f));
     renderer.end();
     renderer.draw();
 
     window->update();
 
-//    frame++;
-    if (frame > 3) {
-      frame = 0;
-    }
-
     handleEvents();
-    // For now just a cout
-    fps->update();
     fps->Render();
   }
 }
@@ -98,8 +94,8 @@ Game::Game(
     int windowHeight
 ) : windowHeight(windowHeight), windowWidth(windowWidth) {
   ratio = gcd(windowWidth, windowHeight);
-  aspectWidth = (windowWidth / ratio) * 20.0f;
-  asepectHeight = (windowHeight / ratio) * 20.0f;
+  aspectWidth = (windowWidth / ratio) * 100.0f;
+  asepectHeight = (windowHeight / ratio) * 100.0f;
 }
 
 void Game::handleEvents() {

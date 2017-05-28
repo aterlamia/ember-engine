@@ -29,10 +29,10 @@ Renderable::Renderable(
 }
 
 void Renderable::setDefaultUV() {
-  uv.push_back(glm::vec2(0.25f, 0.25f));
-  uv.push_back(glm::vec2(0.25f, 0.50f));
-  uv.push_back(glm::vec2(0.50f, 0.50f));
-  uv.push_back(glm::vec2(0.50f, 0.25f));
+  uv.push_back(glm::vec2(0.0f, 0.0f));
+  uv.push_back(glm::vec2(0.0f, 1.0f));
+  uv.push_back(glm::vec2(1.0f, 1.0f));
+  uv.push_back(glm::vec2(1.0f, 0.0f));
 }
 
 const glm::vec3 &Renderable::getPosition() const {

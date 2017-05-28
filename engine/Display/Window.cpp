@@ -58,6 +58,8 @@ namespace Ember {
     }
     glewExperimental = GL_TRUE;
     glewInit();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     return true;
   }
@@ -68,6 +70,7 @@ namespace Ember {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
 
     return true;
   }

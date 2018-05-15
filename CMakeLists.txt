@@ -36,6 +36,7 @@ add_executable(Ember_core ${SOURCE_FILES})
 # Use the FindPkgCOnfig to find sdl and sdl image.
 INCLUDE(FindPkgConfig)
 INCLUDE(FindFreeImage.cmake)
+INCLUDE(FindGLM.cmake)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 PKG_SEARCH_MODULE(GLFW REQUIRED glfw3)
